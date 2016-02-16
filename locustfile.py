@@ -4,7 +4,9 @@ def login(l):
     l.client.post("/login", {"username":"ellen_key", "password":"education"})
 
 def index(l):
-    l.client.get("/")
+    response = l.client.get("/")
+    print "Response status code:", response.status_code
+    print "Response content:", response.content
 
 def profile(l):
     l.client.get("/profile")
