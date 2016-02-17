@@ -1,0 +1,3 @@
+resources/locustconfig.properties
+.idea/
+*.pyc
