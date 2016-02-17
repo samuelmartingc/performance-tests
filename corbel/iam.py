@@ -11,7 +11,7 @@ config = ConfigParser.RawConfigParser()
 config.read(_LOCUST_CONFIG_FILE)
 
 
-def get_access_token(uuid, secret):
+def get_client_access_token(uuid, secret):
     claims = {
         'iss': uuid,
         'aud': config.get('IAM', 'iam.claims.aud'),
@@ -35,8 +35,8 @@ def get_access_token(uuid, secret):
     return str(request.json()['accessToken'])
 
 
-_ADMIN_TOKEN = get_access_token(config.get('ADMIN_USER', 'admin.claims.iss'),
-                                config.get('ADMIN_USER', 'admin.secret'))
+_ADMIN_TOKEN = get_client_access_token(config.get('ADMIN_USER', 'admin.claims.iss'),
+                                       config.get('ADMIN_USER', 'admin.secret'))
 
 
 class User:
@@ -44,12 +44,45 @@ class User:
         random = str(randint(0, 999999))
         self.email = "createUserIam.iam" + random + "@funkifake.com"
         self.username = "createUserIam.iam" + random + "@funkifake.com"
+        self.password = "createUserIam.iam" + random + "@funkifake.com"
 
     def get_user_json(self):
-        return json.dumps({"email": self.email, "username": self.username})
+        return json.dumps({"email": self.email, "username": self.username, "password": self.password})
 
     def set_user_id(self, id):
         self.id = id
+
+    def set_user_access_token(self):
+        self.access_token = self.get_user_access_token()
+
+    def get_user_access_token(self):
+        headers = {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",
+            "Authorization": 'Bearer ' + _ADMIN_TOKEN,
+            "withCredentials": "true"
+        }
+
+        claims = {
+            "iss": config.get('ADMIN_USER', 'admin.claims.iss'),
+            "aud": config.get('IAM', 'iam.claims.aud'),
+            "exp": time.time() + _MAX_EXPIRATION_TIME,
+            "basic_auth.username": self.username,
+            "basic_auth.password": self.password,
+            "scopes": ""
+        }
+
+        encoded = jwt.encode(claims, config.get('ADMIN_USER', 'admin.secret'), algorithm='HS256')
+
+        data = {
+            "grant_type": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+            "assertion": encoded
+        }
+
+        request = requests.post(config.get('IAM', 'iam.endpoint.gettoken'), data=data, headers=headers)
+
+        print request.json()
+        return str(request.json()['accessToken'])
 
     def tostring(self):
         return self.__dict__
@@ -66,6 +99,8 @@ def create_user():
 
     request = requests.post(config.get('IAM', 'iam.endpoint.createuser'), data=user.get_user_json(), headers=headers)
     user.set_user_id(request.headers['location'].split('/')[-1])
+    user.set_user_access_token()
+
     return user
 
 
