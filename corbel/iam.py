@@ -5,7 +5,7 @@ import ConfigParser
 from random import randint
 import json
 
-_LOCUST_CONFIG_FILE = 'locustconfig.properties'
+_LOCUST_CONFIG_FILE = '../resources/locustconfig.properties'
 _MAX_EXPIRATION_TIME = 3600
 config = ConfigParser.RawConfigParser()
 config.read(_LOCUST_CONFIG_FILE)
