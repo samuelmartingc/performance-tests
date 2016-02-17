@@ -1,1 +1,3 @@
 locustconfig.properties
+.idea/
+*.pyc
