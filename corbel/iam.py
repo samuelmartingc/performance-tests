@@ -5,10 +5,6 @@ import ConfigParser
 from random import randint
 import json
 
-import sys
-print "iammmmmmmmmmmmmmmmmmmm"
-print sys.path
-
 _LOCUST_CONFIG_FILE = 'resources/locustconfig.properties'
 _MAX_EXPIRATION_TIME = 3600
 config = ConfigParser.RawConfigParser()

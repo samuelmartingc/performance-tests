@@ -1,9 +1,6 @@
 from locust import HttpLocust, TaskSet, task
 import sys
-print sys.path
 sys.path[0] = sys.path[0].rpartition('/test')[0]
-print "----------------"
-print sys.path
 from corbel import iam
 from src.tracking import trackingSrc
 
@@ -17,7 +14,7 @@ class UserBehavior(TaskSet):
 
     @task
     def index(self):
-        print "helloasf"
+        print "tracking.py:send_tracking"
         trackingSrc.send_tracking(self.user)
 
 
