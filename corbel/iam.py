@@ -81,7 +81,6 @@ class User:
 
         request = requests.post(config.get('IAM', 'iam.endpoint.gettoken'), data=data, headers=headers)
 
-        print request.json()
         return str(request.json()['accessToken'])
 
     def tostring(self):
@@ -116,5 +115,4 @@ def delete_users(users):
     }
 
     for user in users:
-        request = requests.delete(config.get('IAM', 'iam.endpoint.deleteuser') + "/" + user.id, headers=headers)
-        print "success!" if (request.status_code == 204) else "error! status:" + str(request.status_code)
+        requests.delete(config.get('IAM', 'iam.endpoint.deleteuser') + "/" + user.id, headers=headers)
