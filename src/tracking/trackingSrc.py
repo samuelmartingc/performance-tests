@@ -2,7 +2,11 @@ import requests
 import ConfigParser
 import json
 
-_LOCUST_CONFIG_FILE = '../resources/locustconfig.properties'
+import sys
+print "trakinnnnnnnnnnnnnnnnnnnnnn"
+print sys.path
+
+_LOCUST_CONFIG_FILE = 'resources/locustconfig.properties'
 
 config = ConfigParser.RawConfigParser()
 config.read(_LOCUST_CONFIG_FILE)

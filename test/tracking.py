@@ -1,6 +1,11 @@
 from locust import HttpLocust, TaskSet, task
+import sys
+print sys.path
+sys.path[0] = sys.path[0].rpartition('/test')[0]
+print "----------------"
+print sys.path
 from corbel import iam
-from src.tracking import tracking
+from src.tracking import trackingSrc
 
 
 # each locust will have their own user precreated in on_start
@@ -13,7 +18,7 @@ class UserBehavior(TaskSet):
     @task
     def index(self):
         print "helloasf"
-        tracking.send_tracking(self.user)
+        trackingSrc.send_tracking(self.user)
 
 
 class WebsiteUser(HttpLocust):
