@@ -4,6 +4,7 @@ import time
 import ConfigParser
 from random import randint
 import json
+from time import sleep
 
 _LOCUST_CONFIG_FILE = 'resources/locustconfig.properties'
 _MAX_EXPIRATION_TIME = 3600
@@ -100,6 +101,7 @@ def create_user():
     user.set_user_id(request.headers['location'].split('/')[-1])
     user.set_user_access_token()
 
+    sleep(0.3)
     return user
 
 
