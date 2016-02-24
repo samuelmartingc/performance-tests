@@ -1,0 +1,16 @@
+---
+execution:
+- executor: locust
+  concurrency: 10
+  ramp-up: 1m
+  iterations: 1000
+  scenario:
+    default-address: http://www.example.com
+#    script: ./test/pocs/locustfile_hello_world.py
+    script: ./test/tracking.py
+  reporting:
+  - final_stats
+  - console
+settings:
+  artifacts-dir: ./reports/%H%M%S # path where to save artifacts, default is %Y-%m-%d_%H-%M-%S.%f
+  aggregator: consolidator
