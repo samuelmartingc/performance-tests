@@ -4,6 +4,8 @@ sys.path[0] = sys.path[0].rpartition('/test')[0]
 from corbel import iam
 from src.tracking import tracking_src
 
+import resource
+resource.setrlimit(resource.RLIMIT_NOFILE, (65536, 65536))
 
 # each locust will have their own user precreated in on_start
 class UserBehavior(TaskSet):
